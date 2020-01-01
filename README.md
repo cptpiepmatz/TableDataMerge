@@ -23,7 +23,7 @@ These allow some extra functionality
 
 Flag | Functionality
 -----| -------------
--precision <digits after seperator> | Changes the digits after every separator on numbers
+-precision \<digits after seperator\> | Changes the digits after every separator on numbers
 -comma | Converts all inputs to use commas instead of dots as separator
 -science | Every number will be displayed in scientific notation
 -sign | Every number will be displayed signed
