@@ -12,7 +12,7 @@ FlagList flagList;
 #include "functions/exportEntries.h"
 
 #include "functions/printHelp.h"
-string buildVersion = "1.0.1";
+string buildVersion = "1.0.2";
 
 void printVersion() {
   system("cls");
@@ -54,6 +54,7 @@ int main(const int argc, const char *argv[]) {
   // count files
   cout << "Counting File Amount..." << endl;
   int fileAmount = (argc - 1 - flagList.flagAmount);
+  if (fileAmount < 1) printHelp();
   debugOutput("Found " + to_string(fileAmount) + " files");
   auto *filePaths = new fs::path[fileAmount];
   int fileIndex = 0;

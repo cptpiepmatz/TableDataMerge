@@ -28,5 +28,7 @@ void printHelp() {
   printLine("  -hline\t\t\t\tIf used with '-latex' between every line a '\\hline' will be printed");
   printLine("  -debug\t\t\t\tPrints a shit ton of data");
 
+  if (flagList.usePause) system("pause");
+
   exit(0);
 }

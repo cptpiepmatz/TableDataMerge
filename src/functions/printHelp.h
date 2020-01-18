@@ -2,6 +2,7 @@
 #define TABLEDATA_PRINTHELP_H
 
 #include "../stdLibraries.h"
+#include "../globalObjects.h"
 
 extern string buildVersion;
 
