@@ -36,8 +36,12 @@ void extractEntries(
   }
   else if (fileType == ".m") {
     while (getline(file, line)) {
-      if (line.empty()) continue;
-      if (line.front() == '%') continue;
+      if (line.empty())  {
+        continue;
+      }
+      if (line.front() == '%') {
+        continue;
+      }
       if (line.front() != ' ') {
         int assignIndex = line.find_first_of('=');
         entries[depthIndex][offset] = line.substr(0, assignIndex - 1);

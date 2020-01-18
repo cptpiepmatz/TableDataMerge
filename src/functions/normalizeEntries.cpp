@@ -78,7 +78,6 @@ void addSigning(string &entry) {
   regex_search(entry, match, search);
   if (!match.empty() && match.prefix().str().empty()) {
     debugOutput("Adding signing to " + entry);
-    entry.resize(entry.length() + 1);
     entry = "+" + entry;
   }
 }

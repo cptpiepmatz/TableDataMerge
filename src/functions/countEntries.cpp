@@ -24,7 +24,7 @@ void findEntries(
 
 // function for .m per line
 int findEntriesMLine(string line) {
-  int endDotsPos = line.find_last_of("...");
+  int endDotsPos = line.rfind("...");
   line = line.substr(0, endDotsPos);
   regex search(R"([\+\-]?[\d]+([\.,]\d+([eE][\+\-]?\d+)?)?[;\] ]+)");
   smatch match;
