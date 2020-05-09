@@ -11,6 +11,7 @@ FlagList::FlagList() {
   this->usePause = true;
   this->forceScientificNotation = false;
   this->forceSigningNumbers = false;
+  this->useMathMode = false;
 
   this->flagAmount = 0;
 }
@@ -78,6 +79,13 @@ bool FlagList::setFlag(
   if (flagName == this->possibleFlags[7]) {
     // "sign" flag
     this->forceSigningNumbers = true;
+    arguments[index] = nullptr;
+    this->flagAmount++;
+    return true;
+  }
+  if (flagName == this->possibleFlags[8]) {
+    // "mathmode" flag
+    this->useMathMode = true;
     arguments[index] = nullptr;
     this->flagAmount++;
     return true;

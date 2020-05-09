@@ -7,7 +7,7 @@
 
 class FlagList {
 private:
-    const char *possibleFlags[8] {
+    const char *possibleFlags[9] {
         // all the flags you can enter
         "latex",
         "comma",
@@ -16,7 +16,8 @@ private:
         "nopause",
         "debug",
         "science",
-        "sign"
+        "sign",
+        "mathmode"
     };
 
 public:
@@ -28,6 +29,7 @@ public:
     bool usePause;
     bool forceScientificNotation;
     bool forceSigningNumbers;
+    bool useMathMode;
 
     int flagAmount;
 

@@ -12,7 +12,7 @@ FlagList flagList;
 #include "functions/exportEntries.h"
 
 #include "functions/printHelp.h"
-string buildVersion = "1.0.2";
+string buildVersion = "1.1.0";
 
 void printVersion() {
   system("cls");

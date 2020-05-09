@@ -31,6 +31,7 @@ Flag | Functionality
 -latex | Outputs merged table in latex format
 -hline | If used with '-latex' between every line a '\hline' will be printed
 -debug | Prints a shit ton of data
+-mathmode | If used with '-latex' every cell will be inserted into math mode
 
 ## Supported File Formats
 - .dat(separated by tabs and 2+ spaces)

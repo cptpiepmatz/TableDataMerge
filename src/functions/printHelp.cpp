@@ -27,6 +27,7 @@ void printHelp() {
   printLine("  -latex\t\t\t\tOutputs merged table in latex format");
   printLine("  -hline\t\t\t\tIf used with '-latex' between every line a '\\hline' will be printed");
   printLine("  -debug\t\t\t\tPrints a shit ton of data");
+  printLine("  -mathmode \t\t\t\tIf used with '-latex' every cell will be inserted into math mode");
 
   if (flagList.usePause) system("pause");
 

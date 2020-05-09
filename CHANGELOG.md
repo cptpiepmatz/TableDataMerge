@@ -10,3 +10,8 @@
 
 ### Changed
 - Fixed file handling if no file was given but flags were set
+
+## [1.1.0] - 2020-05-09
+
+### Added
+- Added a flag for latex math environment called "mathmode"

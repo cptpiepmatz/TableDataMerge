@@ -7,6 +7,15 @@ void exportEntries(
   string **entries,
   const int &width,
   const int &depth) {
+  if (flagList.outputLatex && flagList.useMathMode) {
+    // encase every entry in '$...$'
+    for (int i = 0; i < depth; i++) {
+      for (int j = 0; j < width; j++) {
+        entries[i][j] = "$" + entries[i][j] + "$";
+      }
+    }
+  }
+
   if (flagList.outputLatex) {
     // output separated with '&' for latex
     for (int i = 0; i < depth; i++) {
