@@ -15,6 +15,7 @@ void findEntries(
       findings++;
       line = match.suffix().str();
     }
+    if (!line.empty()) findings++;
     lineCount++;
     if (findings > maxWidth) maxWidth = findings;
   }
@@ -63,7 +64,7 @@ void countEntries(int &width, int &depth, ifstream &file, const string &fileType
     findEntries(width, depth, file, search);
   }
   else if (fileType == ".csv") {
-    regex search(R"([^;]+;)");
+    regex search(R"([^;]*;)");
     findEntries(width, depth, file, search);
   }
   else if (fileType == ".m") {

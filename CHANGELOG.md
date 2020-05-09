@@ -15,3 +15,8 @@
 
 ### Added
 - Added a flag for latex math environment called "mathmode"
+
+## [1.1.1] - 2020-05-09
+
+### Changed
+- Fixed incorrect counting on trailing semicolons of csv files
