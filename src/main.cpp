@@ -12,7 +12,7 @@ FlagList flagList;
 #include "functions/exportEntries.h"
 
 #include "functions/printHelp.h"
-string buildVersion = "1.1.1";
+string buildVersion = "1.1.2";
 
 void printVersion() {
   system("cls");
@@ -20,7 +20,7 @@ void printVersion() {
   cout << endl;
 }
 
-bool isSupported(const fs::path &filePath) {
+bool isSupported(const string &fileType) {
   const char *supportedTypes[] = {
     ".txt",
     ".m",
@@ -29,8 +29,17 @@ bool isSupported(const fs::path &filePath) {
   };
 
   for (const string &supportedType : supportedTypes) {
-    if (filePath.extension().string() == supportedType) return true;
+    if (fileType == supportedType) return true;
   }
+  cout << endl;
+  cout << "The file type '" << fileType << "' is not supported" << endl;
+  cout << "Following file types are supported: ";
+  for (const string &supportedType: supportedTypes) {
+    cout << "'" << supportedType << "' ";
+  }
+  cout << endl;
+  cout << endl;
+  system("pause");
   return false;
 }
 
@@ -68,10 +77,13 @@ int main(const int argc, const char *argv[]) {
   // check for valid file types
   cout << "Checking if Files are supported..." << endl;
   for (int i = 0; i < fileAmount; i++) {
+    string fileType = filePaths[i].extension().string();
     debugOutput(
-      "Checking if " + filePaths[i].extension().string() + " is supported"
-      );
-    if (!isSupported(filePaths[i])) printHelp();
+      "Checking if " + fileType + " is supported"
+    );
+    if (!isSupported(fileType)) {
+      printHelp();
+    }
   }
 
   // create file array

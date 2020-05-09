@@ -11,7 +11,9 @@ void exportEntries(
     // encase every entry in '$...$'
     for (int i = 0; i < depth; i++) {
       for (int j = 0; j < width; j++) {
-        entries[i][j] = "$" + entries[i][j] + "$";
+        if (!entries[i][j].empty()) {
+          entries[i][j] = "$" + entries[i][j] + "$";
+        }
       }
     }
   }

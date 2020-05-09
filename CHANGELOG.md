@@ -20,3 +20,9 @@
 
 ### Changed
 - Fixed incorrect counting on trailing semicolons of csv files
+
+## [1.1.2] - 2020-05-09
+
+### Changed
+- Updated error message if file type is not supported
+- Fixed empty '$$' (latex does not like that)
