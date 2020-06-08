@@ -11,7 +11,10 @@ TableDataMerge is a tool to merge together plain text tables as they are in a
 .csv or .dat file.
 
 ## Easy Install (recommended)
-If you just want to use this. Grab the easy installer <a href="https://raw.githubusercontent.com/derPiepmatz/TableDataMerge/master/EasySetup.ps1" download="EasySetup.ps1">here</a>.
+If you just want to use this. 
+Grab the easy installer 
+[here](https://cptpiepmatz.de/instant-download/?url=https://raw.githubusercontent.com/derPiepmatz/TableDataMerge/master/EasySetup.ps1).
+<!-- dirty way to bypass github's download strip -->
 
 ## Usage
 If you used the easy installer you can just drag and drop files to the shortcut on your desktop.
