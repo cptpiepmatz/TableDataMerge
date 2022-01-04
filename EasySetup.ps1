@@ -1,4 +1,4 @@
-$source = "https://github.com/derPiepmatz/TableDataMerge/releases/latest/download/TableDataMerge.exe"
+$source = "https://github.com/cptpiepmatz/TableDataMerge/releases/latest/download/TableDataMerge.exe"
 $installPath = "$env:LOCALAPPDATA\TableDataMerge"
 $outFile = "$installPath\TableDataMerge.exe"
 $tdmOutput = "$installPath\Output"
@@ -33,7 +33,7 @@ foreach ($args in $shortcutArguments) {
 }
 
 # create output shortcut to desktop
-$dirIconSource = "https://raw.githubusercontent.com/derPiepmatz/TableDataMerge/master/icon/dirIcon.ico"
+$dirIconSource = "https://raw.githubusercontent.com/cptpiepmatz/TableDataMerge/master/icon/dirIcon.ico"
 if (-Not(Test-Path -Path "$installPath/dirIcon.ico" -PathType Leaf)) {
   Invoke-WebRequest -Uri $dirIconSource -OutFile "$installPath/dirIcon.ico"
   attrib +h "$installPath/dirIcon.ico"

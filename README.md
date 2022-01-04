@@ -3,8 +3,8 @@
 </p>
 
 # TableDataMerge
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/derPiepmatz/TableDataMerge)
-![GitHub](https://img.shields.io/github/license/derPiepmatz/TableDataMerge)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/cptpiepmatz/TableDataMerge)
+![GitHub](https://img.shields.io/github/license/cptpiepmatz/TableDataMerge)
 
 ## About
 TableDataMerge is a tool to merge together plain text tables as they are in a
@@ -13,7 +13,7 @@ TableDataMerge is a tool to merge together plain text tables as they are in a
 ## Easy Install (recommended)
 If you just want to use this. 
 Grab the easy installer 
-[here](https://cptpiepmatz.de/instant-download/?url=https://raw.githubusercontent.com/derPiepmatz/TableDataMerge/master/EasySetup.ps1).
+[here](https://cptpiepmatz.de/instant-download/?url=https://raw.githubusercontent.com/cptpiepmatz/TableDataMerge/master/EasySetup.ps1).
 <!-- dirty way to bypass github's download strip -->
 
 ## Usage
@@ -27,7 +27,7 @@ easy installer you'll probably need *cmd*,
 TableDataMerge.exe <file(s) to merge...> [option flags...]
 ```
 
-You can download it yourself [here](https://github.com/derPiepmatz/TableDataMerge/releases/latest).
+You can download it yourself [here](https://github.com/cptpiepmatz/TableDataMerge/releases/latest).
 
 ### Flags
 These allow some extra functionality
