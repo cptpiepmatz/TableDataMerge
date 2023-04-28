@@ -2,6 +2,8 @@ use std::fmt::{Debug, Display, Formatter};
 use std::str::FromStr;
 use tabled::builder::Builder;
 
+mod dat;
+
 pub struct Table {
     height: usize,
     width: usize,

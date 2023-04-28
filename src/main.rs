@@ -119,6 +119,15 @@ fn main() {
         });
         let file_type = file_path.extension().and_then(OsStr::to_str);
         match file_type {
+            Some("txt" | "dat") => {
+                match Table::from_dat(&content) {
+                    Ok(table) => tables.push((file_stem.to_string(), table)),
+                    Err(_) => {
+                        eprintln!("could not parse table '{file}'");
+                        process::exit(1);
+                    }
+                }
+            },
             Some(file_type) => {
                 eprintln!("unknown file type '{file_type}'");
                 process::exit(1);
