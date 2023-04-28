@@ -1,20 +1,20 @@
 #![allow(non_snake_case)]
 
-use std::{fs, process};
 use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
+use std::{fs, process};
 
 use clap::error::ErrorKind;
 use clap::{CommandFactory, Parser, ValueEnum};
 
-use crate::table::Table;
+use crate::table::{FormatOptions, Table};
 
 mod table;
 
-#[derive(Parser, Debug)]
+#[derive(Parser, Debug, Clone)]
 struct Args {
     #[arg(short, long)]
-    to: Option<OutTypes>,
+    to: OutTypes,
 
     #[arg(short, long)]
     out: Option<String>,
@@ -22,7 +22,7 @@ struct Args {
     #[arg(short, long)]
     precision: Option<u16>,
 
-    #[arg(short, long, default_value_t = false)]
+    #[arg(short, long, default_value_t = false, conflicts_with = "dot")]
     comma: bool,
 
     #[arg(short, long, default_value_t = false)]
@@ -61,7 +61,7 @@ fn validate_args(args: &Args) {
     let mut cmd = Args::command();
     match args {
         Args {
-            to: None | Some(OutTypes::Csv | OutTypes::Dat),
+            to: OutTypes::Csv | OutTypes::Dat,
             hline: true,
             ..
         } => {
@@ -72,7 +72,7 @@ fn validate_args(args: &Args) {
             .exit();
         }
         Args {
-            to: None | Some(OutTypes::Csv | OutTypes::Dat),
+            to: OutTypes::Csv | OutTypes::Dat,
             math_mode: true,
             ..
         } => {
@@ -83,7 +83,7 @@ fn validate_args(args: &Args) {
             .exit();
         }
         Args {
-            to: None | Some(OutTypes::Dat | OutTypes::Tex),
+            to: OutTypes::Dat | OutTypes::Tex,
             sep: Some(_),
             ..
         } => {
@@ -113,19 +113,20 @@ fn main() {
     });
     for (file, content) in file_contents {
         let file_path = Path::new(file);
-        let file_stem = file_path.file_stem().and_then(OsStr::to_str).unwrap_or_else(|| {
-            eprintln!("could not determine file stem for '{file}'");
-            process::exit(1);
-        });
+        let file_stem = file_path
+            .file_stem()
+            .and_then(OsStr::to_str)
+            .unwrap_or_else(|| {
+                eprintln!("could not determine file stem for '{file}'");
+                process::exit(1);
+            });
         let file_type = file_path.extension().and_then(OsStr::to_str);
         match file_type {
-            Some("txt" | "dat") => {
-                match Table::from_dat(&content) {
-                    Ok(table) => tables.push((file_stem.to_string(), table)),
-                    Err(_) => {
-                        eprintln!("could not parse table '{file}'");
-                        process::exit(1);
-                    }
+            Some("txt" | "dat") => match Table::from_dat(&content) {
+                Ok(table) => tables.push((file_stem.to_string(), table)),
+                Err(_) => {
+                    eprintln!("could not parse table '{file}'");
+                    process::exit(1);
                 }
             },
             Some(file_type) => {
@@ -139,7 +140,43 @@ fn main() {
         }
     }
 
-    dbg!(tables);
+    dbg!(&tables);
 
-    dbg!(args);
+    let out_path = match &args.out {
+        None => {
+            let mut basename = itertools::join(tables.iter().map(|i| i.0.clone()), "_");
+            match &args.to {
+                OutTypes::Csv => basename += ".csv",
+                OutTypes::Dat => basename += ".dat",
+                OutTypes::Tex => basename += ".tex"
+            }
+            basename
+        },
+        Some(arg) => arg.to_string()
+    };
+    let out_path = Path::new(&out_path);
+
+    dbg!(out_path);
+
+    let format_options = FormatOptions::from(args.clone());
+
+    let mut tables = tables.into_iter().map(|(_, table)| table);
+    let mut first_table = tables.next().unwrap(); // infallible
+
+    match args.vertical {
+        false => for table in tables {
+            first_table.concat(table);
+        }
+        true => for table in tables {
+            first_table.stack(table);
+        }
+    }
+
+    let output = match args.to {
+        OutTypes::Csv => todo!(),
+        OutTypes::Dat => first_table.to_dat(&format_options),
+        OutTypes::Tex => todo!()
+    };
+
+    fs::write(out_path, output).unwrap();
 }
