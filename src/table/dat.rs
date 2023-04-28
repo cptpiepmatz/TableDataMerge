@@ -1,4 +1,4 @@
-use crate::table::{Cell, ParseTableError, Table};
+use crate::table::{Cell, FormatOptions, ParseTableError, Table};
 use std::cmp;
 
 impl Table {
@@ -26,5 +26,14 @@ impl Table {
         }
 
         Ok(table)
+    }
+
+    pub fn to_dat(&self, format_options: &FormatOptions) -> String {
+        let mut output = String::new();
+        for row in self.values.iter() {
+            output +=
+                &*(itertools::join(row.iter().map(|c| c.format(format_options)), "\t") + "\n");
+        }
+        output
     }
 }
