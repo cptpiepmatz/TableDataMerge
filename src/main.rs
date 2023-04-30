@@ -7,99 +7,17 @@ use std::{fs, process};
 use clap::error::ErrorKind;
 use clap::{CommandFactory, Parser, ValueEnum};
 
-use crate::table::{FormatOptions, Table};
+use cli::{Args, OutTypes};
+use table::Table;
 
+use crate::table::FormatOptions;
+
+mod cli;
 mod table;
-
-#[derive(Parser, Debug, Clone)]
-struct Args {
-    #[arg(short, long)]
-    to: OutTypes,
-
-    #[arg(short, long)]
-    out: Option<String>,
-
-    #[arg(short, long)]
-    precision: Option<u16>,
-
-    #[arg(short, long, default_value_t = false, conflicts_with = "dot")]
-    comma: bool,
-
-    #[arg(short, long, default_value_t = false)]
-    dot: bool,
-
-    #[arg(short, long, default_value_t = false)]
-    scientific: bool,
-
-    #[arg(short = 'S', long, default_value_t = false)]
-    sign: bool,
-
-    #[arg(short, long = "mathmode", default_value_t = false)]
-    math_mode: bool,
-
-    #[arg(short = 'H', long, default_value_t = false)]
-    hline: bool,
-
-    #[arg(long)]
-    sep: Option<String>,
-
-    #[arg(short, long, default_value_t = false)]
-    vertical: bool,
-
-    #[arg(required = true, num_args(1..))]
-    files: Vec<String>,
-}
-
-#[derive(ValueEnum, Debug, Copy, Clone)]
-enum OutTypes {
-    Csv,
-    Dat,
-    Tex,
-}
-
-fn validate_args(args: &Args) {
-    let mut cmd = Args::command();
-    match args {
-        Args {
-            to: OutTypes::Csv | OutTypes::Dat,
-            hline: true,
-            ..
-        } => {
-            cmd.error(
-                ErrorKind::ArgumentConflict,
-                "'--hline' requires '--to' to be 'tex'",
-            )
-            .exit();
-        }
-        Args {
-            to: OutTypes::Csv | OutTypes::Dat,
-            math_mode: true,
-            ..
-        } => {
-            cmd.error(
-                ErrorKind::ArgumentConflict,
-                "'--mathmode' requires '--to' to be 'tex'",
-            )
-            .exit();
-        }
-        Args {
-            to: OutTypes::Dat | OutTypes::Tex,
-            sep: Some(_),
-            ..
-        } => {
-            cmd.error(
-                ErrorKind::ArgumentConflict,
-                "'--sep' requires '--to' to be 'csv'",
-            )
-            .exit();
-        }
-        _ => {}
-    }
-}
 
 fn main() {
     let args = Args::parse();
-    validate_args(&args);
+    cli::validate_args(&args);
 
     let mut tables: Vec<(String, Table)> = Vec::with_capacity(args.files.len());
     let file_contents = args.files.iter().map(|f| {
@@ -148,11 +66,11 @@ fn main() {
             match &args.to {
                 OutTypes::Csv => basename += ".csv",
                 OutTypes::Dat => basename += ".dat",
-                OutTypes::Tex => basename += ".tex"
+                OutTypes::Tex => basename += ".tex",
             }
             basename
-        },
-        Some(arg) => arg.to_string()
+        }
+        Some(arg) => arg.to_string(),
     };
     let out_path = Path::new(&out_path);
 
@@ -164,18 +82,22 @@ fn main() {
     let mut first_table = tables.next().unwrap(); // infallible
 
     match args.vertical {
-        false => for table in tables {
-            first_table.concat(table);
+        false => {
+            for table in tables {
+                first_table.concat(table);
+            }
         }
-        true => for table in tables {
-            first_table.stack(table);
+        true => {
+            for table in tables {
+                first_table.stack(table);
+            }
         }
     }
 
     let output = match args.to {
         OutTypes::Csv => todo!(),
         OutTypes::Dat => first_table.to_dat(&format_options),
-        OutTypes::Tex => todo!()
+        OutTypes::Tex => todo!(),
     };
 
     fs::write(out_path, output).unwrap();

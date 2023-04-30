@@ -1,5 +1,8 @@
-use crate::table::{Cell, FormatOptions, ParseTableError, Table};
 use std::cmp;
+
+use crate::table::cell::Cell;
+use crate::table::Table;
+use crate::table::{FormatOptions, ParseTableError};
 
 impl Table {
     pub fn from_dat(raw: &str) -> Result<Table, ParseTableError> {
