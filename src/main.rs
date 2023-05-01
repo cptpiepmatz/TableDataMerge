@@ -38,20 +38,22 @@ fn main() {
                 process::exit(1);
             });
         let file_type = file_path.extension().and_then(OsStr::to_str);
-        match file_type {
-            Some("txt" | "dat") => match Table::from_dat(&content) {
-                Ok(table) => tables.push((file_stem.to_string(), table)),
-                Err(_) => {
-                    eprintln!("could not parse table '{file}'");
-                    process::exit(1);
-                }
-            },
+        let parse_res = match file_type {
+            Some("txt" | "dat") => Table::from_dat(&content),
+            Some("json") => Table::from_json(&content),
             Some(file_type) => {
                 eprintln!("unknown file type '{file_type}'");
                 process::exit(1);
             }
             None => {
                 eprintln!("could not determine file type for file '{file}'");
+                process::exit(1);
+            }
+        };
+        match parse_res {
+            Ok(table) => tables.push((file_stem.to_string(), table)),
+            Err(_) => {
+                eprintln!("could not parse table '{file}'");
                 process::exit(1);
             }
         }
