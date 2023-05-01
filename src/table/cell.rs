@@ -34,8 +34,8 @@ impl Cell {
             (None, false, _) => value.to_string(),
             (None, true, false) => nf.format("e", value),
             (None, true, true) => nf.format("+e", value),
-            (Some(p), false, false) => nf.format(format!(".{p}f").as_str(), value),
-            (Some(p), false, true) => nf.format(format!("+.{p}f").as_str(), value),
+            (Some(p), false, false) => nf.format(format!("0.{p}f").as_str(), value),
+            (Some(p), false, true) => nf.format(format!("+0.{p}f").as_str(), value),
             (Some(p), true, false) => nf.format(format!(".{p}e").as_str(), value),
             (Some(p), true, true) => nf.format(format!("+.{p}e").as_str(), value)
         };
