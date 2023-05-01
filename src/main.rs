@@ -65,7 +65,7 @@ fn main() {
                 OutTypes::Dat => basename += ".dat",
                 OutTypes::Tex => basename += ".tex",
             }
-            String::from("tdm") + basename.as_str()
+            String::from("tdm_") + basename.as_str()
         }
         Some(arg) => arg.to_string(),
     };
