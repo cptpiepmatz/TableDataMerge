@@ -7,7 +7,7 @@ use std::fmt::{Debug, Display, Formatter};
 
 #[derive(Parser, Debug, Clone)]
 pub struct Args {
-    #[arg(short, long)]
+    #[arg()]
     pub to: OutTypes,
 
     #[arg(short, long)]
