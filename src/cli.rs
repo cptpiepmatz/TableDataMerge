@@ -19,7 +19,7 @@ pub struct Args {
     #[arg(short, long = "exponent", default_value_t = false)]
     pub exponent: bool,
 
-    #[arg(short = 'S', long, default_value_t = false)]
+    #[arg(short, long, default_value_t = false)]
     pub sign: bool,
 
     #[arg(short, long = "mathmode", default_value_t = false)]
