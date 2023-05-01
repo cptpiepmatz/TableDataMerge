@@ -35,7 +35,7 @@ impl Table {
         let mut output = String::new();
         for row in self.values.iter() {
             output +=
-                &*(itertools::join(row.iter().map(|c| c.format(format_options)), "\t") + "\n");
+                &*(itertools::join(row.iter().map(|c| c.fmt(format_options)), "\t") + "\n");
         }
         output
     }

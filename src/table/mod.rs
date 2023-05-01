@@ -4,7 +4,7 @@ use std::fmt::{Debug, Formatter};
 
 use tabled::builder::Builder;
 
-use crate::cli::Args;
+use crate::cli::{Args, DecimalSeparator};
 use crate::table::cell::Cell;
 
 pub mod cell;
@@ -15,26 +15,24 @@ pub enum ParseTableError {}
 #[derive(Debug, Default)]
 pub struct FormatOptions {
     precision: Option<u16>,
-    comma: bool,
-    dot: bool,
-    scientific: bool,
+    exponent: bool,
+    decimal_sep: DecimalSeparator,
     sign: bool,
     math_mode: bool,
     hline: bool,
-    sep: Option<String>,
+    csv_sep: String,
 }
 
 impl From<Args> for FormatOptions {
     fn from(value: Args) -> Self {
         FormatOptions {
             precision: value.precision,
-            comma: value.comma,
-            dot: value.dot,
-            scientific: value.scientific,
+            exponent: value.exponent,
+            decimal_sep: value.decimal_sep,
             sign: value.sign,
             math_mode: value.math_mode,
             hline: value.hline,
-            sep: value.sep,
+            csv_sep: value.csv_sep,
         }
     }
 }

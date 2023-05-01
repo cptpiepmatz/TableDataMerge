@@ -1,3 +1,4 @@
+use std::fmt::{Display, Formatter};
 use clap::error::ErrorKind;
 use clap::{CommandFactory, Parser, ValueEnum};
 
@@ -12,14 +13,11 @@ pub struct Args {
     #[arg(short, long)]
     pub precision: Option<u16>,
 
-    #[arg(short, long, default_value_t = false, conflicts_with = "dot")]
-    pub comma: bool,
+    #[arg(short, long, default_value = "dot")]
+    pub decimal_sep: DecimalSeparator,
 
-    #[arg(short, long, default_value_t = false)]
-    pub dot: bool,
-
-    #[arg(short, long, default_value_t = false)]
-    pub scientific: bool,
+    #[arg(short, long = "exponent", default_value_t = false)]
+    pub exponent: bool,
 
     #[arg(short = 'S', long, default_value_t = false)]
     pub sign: bool,
@@ -30,8 +28,8 @@ pub struct Args {
     #[arg(short = 'H', long, default_value_t = false)]
     pub hline: bool,
 
-    #[arg(long)]
-    pub sep: Option<String>,
+    #[arg(long, long, default_value = ",")]
+    pub csv_sep: String,
 
     #[arg(short, long, default_value_t = false)]
     pub vertical: bool,
@@ -47,4 +45,9 @@ pub enum OutTypes {
     Tex,
 }
 
+#[derive(ValueEnum, Debug, Copy, Clone, Default)]
+pub enum DecimalSeparator {
+    #[default]
+    Dot,
+    Comma
 }
