@@ -43,6 +43,7 @@ pub enum OutTypes {
     Csv,
     Dat,
     Tex,
+    Md,
     Json
 }
 

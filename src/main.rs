@@ -1,11 +1,9 @@
 #![allow(non_snake_case)]
 
 use std::ffi::OsStr;
-use std::path::{Path, PathBuf};
+use std::path::{Path};
 use std::{fs, process};
-
-use clap::error::ErrorKind;
-use clap::{CommandFactory, Parser, ValueEnum};
+use clap::Parser;
 
 use cli::{Args, OutTypes};
 use table::Table;
@@ -66,6 +64,7 @@ fn main() {
                 OutTypes::Csv => basename += ".csv",
                 OutTypes::Dat => basename += ".dat",
                 OutTypes::Tex => basename += ".tex",
+                OutTypes::Md => basename += ".md",
                 OutTypes::Json => basename += ".json"
             }
             String::from("tdm_") + basename.as_str()
@@ -96,6 +95,7 @@ fn main() {
         OutTypes::Csv => todo!(),
         OutTypes::Dat => first_table.to_dat(&format_options),
         OutTypes::Tex => todo!(),
+        OutTypes::Md => first_table.to_md(&format_options),
         OutTypes::Json => first_table.to_json(&format_options),
     };
 
