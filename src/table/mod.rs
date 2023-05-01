@@ -12,31 +12,6 @@ mod transform;
 
 pub enum ParseTableError {}
 
-#[derive(Debug, Default)]
-pub struct FormatOptions {
-    precision: Option<u16>,
-    exponent: bool,
-    decimal_sep: DecimalSeparator,
-    sign: bool,
-    math_mode: bool,
-    hline: bool,
-    csv_sep: String,
-}
-
-impl From<Args> for FormatOptions {
-    fn from(value: Args) -> Self {
-        FormatOptions {
-            precision: value.precision,
-            exponent: value.exponent,
-            decimal_sep: value.decimal_sep,
-            sign: value.sign,
-            math_mode: value.math_mode,
-            hline: value.hline,
-            csv_sep: value.csv_sep,
-        }
-    }
-}
-
 pub struct Table {
     height: usize,
     width: usize,
@@ -115,5 +90,30 @@ impl Debug for Table {
         }
         let table = table_builder.build();
         write!(f, "{table}")
+    }
+}
+
+#[derive(Debug, Default)]
+pub struct FormatOptions {
+    precision: Option<u16>,
+    exponent: bool,
+    decimal_sep: DecimalSeparator,
+    sign: bool,
+    math_mode: bool,
+    hline: bool,
+    csv_sep: String,
+}
+
+impl From<Args> for FormatOptions {
+    fn from(value: Args) -> Self {
+        FormatOptions {
+            precision: value.precision,
+            exponent: value.exponent,
+            decimal_sep: value.decimal_sep,
+            sign: value.sign,
+            math_mode: value.math_mode,
+            hline: value.hline,
+            csv_sep: value.csv_sep,
+        }
     }
 }
