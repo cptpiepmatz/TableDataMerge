@@ -16,8 +16,6 @@ impl Table {
             height = i + 1;
         }
 
-        dbg!(width);
-
         // construct actual table and fill data
         let (height, width) = (height, width);
         let mut table = Table::new(width, height);

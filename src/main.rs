@@ -57,8 +57,6 @@ fn main() {
         }
     }
 
-    dbg!(&tables);
-
     let out_path = match &args.out {
         None => {
             let mut basename = itertools::join(tables.iter().map(|i| i.0.clone()), "_");
@@ -72,8 +70,6 @@ fn main() {
         Some(arg) => arg.to_string(),
     };
     let out_path = Path::new(&out_path);
-
-    dbg!(out_path);
 
     let format_options = FormatOptions::from(args.clone());
 
