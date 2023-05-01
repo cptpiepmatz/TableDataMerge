@@ -17,7 +17,6 @@ mod table;
 
 fn main() {
     let args = Args::parse();
-    cli::validate_args(&args);
 
     let mut tables: Vec<(String, Table)> = Vec::with_capacity(args.files.len());
     let file_contents = args.files.iter().map(|f| {

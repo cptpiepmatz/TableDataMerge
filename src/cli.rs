@@ -47,42 +47,4 @@ pub enum OutTypes {
     Tex,
 }
 
-pub fn validate_args(args: &Args) {
-    let mut cmd = Args::command();
-    match args {
-        Args {
-            to: OutTypes::Csv | OutTypes::Dat,
-            hline: true,
-            ..
-        } => {
-            cmd.error(
-                ErrorKind::ArgumentConflict,
-                "'--hline' requires '--to' to be 'tex'",
-            )
-            .exit();
-        }
-        Args {
-            to: OutTypes::Csv | OutTypes::Dat,
-            math_mode: true,
-            ..
-        } => {
-            cmd.error(
-                ErrorKind::ArgumentConflict,
-                "'--mathmode' requires '--to' to be 'tex'",
-            )
-            .exit();
-        }
-        Args {
-            to: OutTypes::Dat | OutTypes::Tex,
-            sep: Some(_),
-            ..
-        } => {
-            cmd.error(
-                ErrorKind::ArgumentConflict,
-                "'--sep' requires '--to' to be 'csv'",
-            )
-            .exit();
-        }
-        _ => {}
-    }
 }
