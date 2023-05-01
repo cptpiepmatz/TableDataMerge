@@ -1,7 +1,7 @@
+use crate::cli::DecimalSeparator;
+use format_num::NumberFormat;
 use std::fmt::{Debug, Display, Formatter};
 use std::str::FromStr;
-use format_num::NumberFormat;
-use crate::cli::DecimalSeparator;
 
 use crate::table::FormatOptions;
 
@@ -21,15 +21,20 @@ impl Cell {
             Cell::Int(v) => Cell::fmt_num(*v, format_options),
             Cell::Float(v) => Cell::fmt_num(*v, format_options),
             Cell::Str(s) => s.to_owned(),
-            Cell::Blank => String::from("")
+            Cell::Blank => String::from(""),
         }
     }
 
     fn fmt_num<T>(value: T, format_options: &FormatOptions) -> String
-        where T: Into<f64> + Display + PartialOrd + Copy
+    where
+        T: Into<f64> + Display + PartialOrd + Copy,
     {
         let nf = NumberFormat::new();
-        let formatted = match (format_options.precision, format_options.exponent, format_options.sign) {
+        let formatted = match (
+            format_options.precision,
+            format_options.exponent,
+            format_options.sign,
+        ) {
             (None, false, true) if value.into() >= 0.0 => format!("+{value}"),
             (None, false, _) => value.to_string(),
             (None, true, false) => nf.format("e", value),
@@ -37,12 +42,12 @@ impl Cell {
             (Some(p), false, false) => nf.format(format!("0.{p}f").as_str(), value),
             (Some(p), false, true) => nf.format(format!("+0.{p}f").as_str(), value),
             (Some(p), true, false) => nf.format(format!(".{p}e").as_str(), value),
-            (Some(p), true, true) => nf.format(format!("+.{p}e").as_str(), value)
+            (Some(p), true, true) => nf.format(format!("+.{p}e").as_str(), value),
         };
 
         match format_options.decimal_sep {
             DecimalSeparator::Dot => formatted,
-            DecimalSeparator::Comma => formatted.replace(".", ",")
+            DecimalSeparator::Comma => formatted.replace(".", ","),
         }
     }
 }

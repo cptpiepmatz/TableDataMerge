@@ -1,9 +1,9 @@
 #![allow(non_snake_case)]
 
-use std::ffi::OsStr;
-use std::path::{Path};
-use std::{fs, process};
 use clap::Parser;
+use std::ffi::OsStr;
+use std::path::Path;
+use std::{fs, process};
 
 use cli::{Args, OutTypes};
 use table::Table;
@@ -12,6 +12,7 @@ use crate::table::FormatOptions;
 
 mod cli;
 mod table;
+mod util;
 
 fn main() {
     let args = Args::parse();
@@ -65,7 +66,7 @@ fn main() {
                 OutTypes::Dat => basename += ".dat",
                 OutTypes::Tex => basename += ".tex",
                 OutTypes::Md => basename += ".md",
-                OutTypes::Json => basename += ".json"
+                OutTypes::Json => basename += ".json",
             }
             String::from("tdm_") + basename.as_str()
         }

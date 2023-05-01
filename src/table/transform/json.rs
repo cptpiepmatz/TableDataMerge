@@ -1,7 +1,7 @@
+use crate::table::cell::Cell;
+use crate::table::{FormatOptions, ParseTableError, Table};
 use std::cmp;
 use std::str::FromStr;
-use crate::table::{FormatOptions, ParseTableError, Table};
-use crate::table::cell::Cell;
 
 impl Table {
     pub fn from_json(raw: &str) -> Result<Table, ParseTableError> {
