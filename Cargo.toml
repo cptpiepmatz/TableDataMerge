@@ -3,6 +3,9 @@ name = "TableDataMerge"
 version = "2.0.0"
 edition = "2021"
 
+[package.metadata.winres]
+OriginalFilename = "tdm.exe"
+
 [[bin]]
 name = "tdm"
 path = "src/main.rs"
@@ -22,3 +25,6 @@ tabled = "0.12"
 [dependencies.clap]
 version = "4"
 features = ["derive"]
+
+[target.'cfg(windows)'.build-dependencies]
+winres = "0.1"
