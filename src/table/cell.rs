@@ -16,10 +16,28 @@ pub enum Cell {
 }
 
 impl Cell {
-    pub fn fmt(&self, format_options: &FormatOptions) -> String {
+    pub fn fmt(&self, format_options: &FormatOptions, index: usize) -> String {
+        let mut prefix = "";
+        for (range, prefix_str) in format_options.prefix.iter() {
+            if range.contains(&index) {
+                prefix = prefix_str;
+            }
+        }
+
+        let mut suffix = "";
+        for (range, suffix_str) in format_options.suffix.iter() {
+            if range.contains(&index) {
+                suffix = suffix_str;
+            }
+        }
+
         match self {
-            Cell::Int(v) => Cell::fmt_num(*v, format_options),
-            Cell::Float(v) => Cell::fmt_num(*v, format_options),
+            Cell::Int(v) => {
+                prefix.to_string() + Cell::fmt_num(*v, format_options).as_str() + suffix
+            }
+            Cell::Float(v) => {
+                prefix.to_string() + Cell::fmt_num(*v, format_options).as_str() + suffix
+            }
             Cell::Str(s) => s.to_owned(),
             Cell::Blank => String::from(""),
         }

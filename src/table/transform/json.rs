@@ -33,8 +33,8 @@ impl Table {
 
         for row in self.values.iter() {
             let mut str_row = Vec::with_capacity(self.width);
-            for cell in row.iter() {
-                str_row.push(cell.fmt(format_options));
+            for (i, cell) in row.iter().enumerate() {
+                str_row.push(cell.fmt(format_options, i));
             }
             str_table.push(str_row);
         }

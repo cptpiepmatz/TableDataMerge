@@ -31,8 +31,9 @@ impl Table {
 
     pub fn to_dat(&self, format_options: &FormatOptions) -> String {
         let mut output = String::new();
-        for row in self.values.iter() {
-            output += &*(itertools::join(row.iter().map(|c| c.fmt(format_options)), "\t") + "\n");
+        for (i, row) in self.values.iter().enumerate() {
+            output +=
+                &*(itertools::join(row.iter().map(|c| c.fmt(format_options, i)), "\t") + "\n");
         }
         output
     }

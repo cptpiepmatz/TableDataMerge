@@ -6,6 +6,7 @@ use tabled::builder::Builder;
 
 use crate::cli::{Args, DecimalSeparator};
 use crate::table::cell::Cell;
+use crate::util::AnyRange;
 
 pub mod cell;
 mod transform;
@@ -101,6 +102,8 @@ pub struct FormatOptions {
     sign: bool,
     hline: bool,
     csv_sep: String,
+    prefix: Vec<(AnyRange<usize>, String)>,
+    suffix: Vec<(AnyRange<usize>, String)>,
 }
 
 impl From<Args> for FormatOptions {
@@ -112,6 +115,8 @@ impl From<Args> for FormatOptions {
             sign: value.sign,
             hline: value.hline,
             csv_sep: value.csv_sep,
+            prefix: value.prefix,
+            suffix: value.suffix,
         }
     }
 }
