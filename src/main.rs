@@ -64,6 +64,7 @@ fn main() {
                 OutTypes::Csv => basename += ".csv",
                 OutTypes::Dat => basename += ".dat",
                 OutTypes::Tex => basename += ".tex",
+                OutTypes::Json => basename += ".json"
             }
             String::from("tdm_") + basename.as_str()
         }
@@ -93,6 +94,7 @@ fn main() {
         OutTypes::Csv => todo!(),
         OutTypes::Dat => first_table.to_dat(&format_options),
         OutTypes::Tex => todo!(),
+        OutTypes::Json => first_table.to_json(&format_options),
     };
 
     fs::write(out_path, output).unwrap();

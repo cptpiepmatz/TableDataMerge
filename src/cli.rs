@@ -43,6 +43,7 @@ pub enum OutTypes {
     Csv,
     Dat,
     Tex,
+    Json
 }
 
 #[derive(ValueEnum, Debug, Copy, Clone, Default)]
