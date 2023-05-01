@@ -93,7 +93,7 @@ fn main() {
     let output = match args.to {
         OutTypes::Csv => todo!(),
         OutTypes::Dat => first_table.to_dat(&format_options),
-        OutTypes::Tex => todo!(),
+        OutTypes::Tex => first_table.to_tex(&format_options),
         OutTypes::Md => first_table.to_md(&format_options),
         OutTypes::Json => first_table.to_json(&format_options),
     };
