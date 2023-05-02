@@ -17,7 +17,7 @@ impl Table {
 
         match format_options.hline {
             false => itertools::join(rows, " \\\\\n"),
-            true => itertools::join(rows, " \\\\\n\\hline\n") + "\\\\\n\\hline\n"
+            true => itertools::join(rows, " \\\\\n\\hline\n") + "\\\\\n\\hline\n",
         }
     }
 }
