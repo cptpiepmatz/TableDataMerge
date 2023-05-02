@@ -4,7 +4,7 @@ use std::cmp;
 use std::str::FromStr;
 
 impl Table {
-    pub fn from_json(raw: &str) -> Result<Table, ParseTableError> {
+    pub fn from_json(raw: &str, _: &Option<String>) -> Result<Table, ParseTableError> {
         let parsed_table = serde_json::from_str::<Vec<Vec<String>>>(raw);
         // TODO: handle this well
         let parsed_table = parsed_table.unwrap();

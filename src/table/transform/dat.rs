@@ -5,7 +5,7 @@ use crate::table::Table;
 use crate::table::{FormatOptions, ParseTableError};
 
 impl Table {
-    pub fn from_dat(raw: &str) -> Result<Table, ParseTableError> {
+    pub fn from_dat(raw: &str, _: &Option<String>) -> Result<Table, ParseTableError> {
         // compute width and height of table
         let mut height: usize = 0;
         let mut width: usize = 0;

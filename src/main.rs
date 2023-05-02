@@ -1,5 +1,6 @@
 use clap::Parser;
 use std::ffi::OsStr;
+use std::fmt::format;
 use std::path::Path;
 use std::{fs, process};
 
@@ -19,13 +20,13 @@ fn main() {
     let file_contents = args.files.iter().map(|f| {
         (
             f,
-            fs::read_to_string(f).unwrap_or_else(|e| {
+            fs::read_to_string(&f.0).unwrap_or_else(|e| {
                 eprintln!("{e}");
                 process::exit(1);
             }),
         )
     });
-    for (file, content) in file_contents {
+    for ((file, additional_data), content) in file_contents {
         let file_path = Path::new(file);
         let file_stem = file_path
             .file_stem()
@@ -36,8 +37,9 @@ fn main() {
             });
         let file_type = file_path.extension().and_then(OsStr::to_str);
         let parse_res = match file_type {
-            Some("txt" | "dat") => Table::from_dat(&content),
-            Some("json") => Table::from_json(&content),
+            Some("txt" | "dat") => Table::from_dat(&content, additional_data),
+            Some("json") => Table::from_json(&content, additional_data),
+            Some("csv") => Table::from_csv(&content, additional_data),
             Some(file_type) => {
                 eprintln!("unknown file type '{file_type}'");
                 process::exit(1);
@@ -91,7 +93,7 @@ fn main() {
     }
 
     let output = match args.to {
-        OutTypes::Csv => todo!(),
+        OutTypes::Csv => first_table.to_csv(&format_options),
         OutTypes::Dat => first_table.to_dat(&format_options),
         OutTypes::Tex => first_table.to_tex(&format_options),
         OutTypes::Md => first_table.to_md(&format_options),

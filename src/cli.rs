@@ -1,3 +1,4 @@
+use std::convert::Infallible;
 use crate::table::cell::Cell;
 use crate::util::AnyRange;
 use clap::error::ErrorKind;
@@ -40,8 +41,9 @@ pub struct Args {
     #[arg(short, long, default_value_t = false)]
     pub vertical: bool,
 
-    #[arg(required = true, num_args(1..))]
-    pub files: Vec<String>,
+    // files with additional data
+    #[arg(required = true, num_args(1..), value_parser = parse_file_path)]
+    pub files: Vec<(String, Option<String>)>,
 }
 
 #[derive(ValueEnum, Debug, Copy, Clone)]
@@ -81,4 +83,11 @@ fn parse_fix(input: &str) -> Result<(AnyRange<usize>, String), ParseFixError> {
     let fix = split.next().unwrap();
 
     Ok((range, fix.to_string()))
+}
+
+fn parse_file_path(input: &str) -> Result<(String, Option<String>), Infallible> {
+    let mut split = input.splitn(2, ':');
+    let file_path = split.next().unwrap().to_string(); // first value always exists
+    let additional_data = split.next().map(str::to_string);
+    Ok((file_path, additional_data))
 }
