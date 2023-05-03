@@ -40,6 +40,7 @@ fn main() {
             Some("txt" | "dat") => Table::from_dat(&content, additional_data),
             Some("json") => Table::from_json(&content, additional_data),
             Some("csv") => Table::from_csv(&content, additional_data),
+            Some("m") => Table::from_m(&content, additional_data),
             Some(file_type) => {
                 eprintln!("unknown file type '{file_type}'");
                 process::exit(1);

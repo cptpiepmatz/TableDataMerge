@@ -94,6 +94,22 @@ impl Debug for Table {
     }
 }
 
+impl From<VecDeque<Vec<Cell>>> for Table {
+    fn from(mut values: VecDeque<Vec<Cell>>) -> Self {
+        let (mut width, mut height) = (0, 0);
+        for (i, row) in values.iter().enumerate() {
+            height = i;
+            for (j, _) in row.iter().enumerate() {
+                width = cmp::max(width, j + 1)
+            }
+        }
+        for row in values.iter_mut() {
+            row.resize(width, Cell::Blank);
+        }
+        Table { height, width, values }
+    }
+}
+
 #[derive(Debug, Default)]
 pub struct FormatOptions {
     precision: Option<u16>,
