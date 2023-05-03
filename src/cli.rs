@@ -1,8 +1,8 @@
-use std::convert::Infallible;
 use crate::table::cell::Cell;
 use crate::util::AnyRange;
 use clap::error::ErrorKind;
 use clap::{CommandFactory, Parser, ValueEnum};
+use std::convert::Infallible;
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 
