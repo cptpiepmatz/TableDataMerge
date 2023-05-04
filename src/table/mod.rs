@@ -16,18 +16,6 @@ pub struct Table {
 }
 
 impl Table {
-    pub fn new(width: usize, height: usize) -> Table {
-        let mut rows = VecDeque::with_capacity(height);
-        for _ in 0..height {
-            rows.push_back(Self::create_blank_row(width));
-        }
-        Table {
-            height,
-            width,
-            values: rows,
-        }
-    }
-
     fn pad_bottom(&mut self, height: usize) {
         if self.height < height {
             let needed_height = height - self.height;
