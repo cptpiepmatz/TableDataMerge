@@ -6,6 +6,11 @@ use std::convert::Infallible;
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};
 
+/// TableDataMerge
+///
+/// 'tdm' is a versatile command-line tool for merging plain-text tables horizontally or vertically.
+/// It provides support for various input and output data types, and offers cell formatting options,
+/// including number formatting, prefixes, and suffixes.
 #[derive(Parser, Debug, Clone)]
 pub struct Args {
     #[arg()]

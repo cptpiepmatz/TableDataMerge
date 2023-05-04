@@ -1,9 +1,3 @@
-//! # TableDataMerge
-//!
-//! `tdm` is a command-line tool written in Rust that allows users to merge plain-text tables
-//! horizontally or vertically. The tool provides various options for input and output data types,
-//! as well as cell formatting options such as number formatting, prefixes, and suffixes.
-
 use clap::Parser;
 use std::ffi::OsStr;
 use std::fmt::format;
