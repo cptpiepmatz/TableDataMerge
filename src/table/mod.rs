@@ -1,17 +1,18 @@
+use crate::cli::{Args, DecimalSeparator};
+use crate::table::cell::Cell;
+use crate::table::transform::csv::ParseCsvTableError;
+use crate::util::AnyRange;
 use std::cmp;
 use std::collections::VecDeque;
 use std::fmt::{Debug, Formatter};
-
 use tabled::builder::Builder;
-
-use crate::cli::{Args, DecimalSeparator};
-use crate::table::cell::Cell;
-use crate::util::AnyRange;
 
 pub mod cell;
 mod transform;
 
-pub enum ParseTableError {}
+pub enum ParseTableError {
+    Csv(ParseCsvTableError),
+}
 
 pub struct Table {
     height: usize,
