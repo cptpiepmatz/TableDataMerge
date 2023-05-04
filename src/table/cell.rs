@@ -1,10 +1,13 @@
 use crate::cli::DecimalSeparator;
+use crate::table::FormatOptions;
 use format_num::NumberFormat;
 use std::fmt::{Debug, Display, Formatter};
 use std::str::FromStr;
 
-use crate::table::FormatOptions;
-
+/// A cell that can hold integer, float, or string values, or be blank.
+///
+/// The `Cell` enum represents a single element in a table.
+/// The numerical options allow for more precise formatting of these values.
 #[derive(Default, Clone)]
 pub enum Cell {
     Int(i32),
@@ -16,7 +19,26 @@ pub enum Cell {
 }
 
 impl Cell {
+    /// Formats the cell content as a string to be used in a table.
+    ///
+    /// The method uses the provided format options from the command-line interface.
+    /// The index is used to check if some cells should get custom formatting.
+    ///
+    /// # Arguments
+    ///
+    /// * `format_options` - A reference to the format options specified by the user.
+    /// * `index` - The index of the cell in the table.
+    ///
+    /// # Returns
+    ///
+    /// A `String` containing the formatted cell content.
     pub fn fmt(&self, format_options: &FormatOptions, index: usize) -> String {
+        // The prefix and suffix are selected from the format options, checking if the index is
+        // within one of the rules.
+        // Later rules can potentially override previously evaluated rules.
+
+        // Prepare the prefix by iterating through the format options' prefix rules.
+        // Most cells are expected to be numerical, so there's no need to test for cell type here.
         let mut prefix = "";
         for (range, prefix_str) in format_options.prefix.iter() {
             if range.contains(&index) {
@@ -24,6 +46,8 @@ impl Cell {
             }
         }
 
+        // Prepare the suffix by iterating through the format options' suffix rules.
+        // Most cells are expected to be numerical, so there's no need to test for cell type here.
         let mut suffix = "";
         for (range, suffix_str) in format_options.suffix.iter() {
             if range.contains(&index) {
@@ -31,6 +55,7 @@ impl Cell {
             }
         }
 
+        // Format the cell content based on its type, adding the prefix and suffix as necessary.
         match self {
             Cell::Int(v) => {
                 prefix.to_string() + Cell::fmt_num(*v, format_options).as_str() + suffix
@@ -43,6 +68,16 @@ impl Cell {
         }
     }
 
+    /// Formats numerical cell values with the given format options.
+    ///
+    /// # Arguments
+    ///
+    /// * `value` - The numerical value of the cell.
+    /// * `format_options` - A reference to the format options specified by the user.
+    ///
+    /// # Returns
+    ///
+    /// A `String` containing the formatted numerical cell value.
     fn fmt_num<T>(value: T, format_options: &FormatOptions) -> String
     where
         T: Into<f64> + Display + PartialOrd + Copy,
@@ -70,6 +105,13 @@ impl Cell {
     }
 }
 
+/// Implementation of the `FromStr` trait for cells.
+///
+/// This infallible conversion tries to parse numerical values in cells, first attempting to parse
+/// integers, then floats
+/// (first using the default "." decimal separator, then with the "," replaced with ".").
+/// If the cell only consists of trimmable characters, the cell is considered blank.
+/// Otherwise, the cell content is stored as a string.
 impl FromStr for Cell {
     type Err = std::convert::Infallible;
 
@@ -94,6 +136,9 @@ impl FromStr for Cell {
     }
 }
 
+/// Custom implementation of the `Debug` trait for `Cell`.
+///
+/// This implementation provides a simpler representation of the cell content and its type.
 impl Debug for Cell {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
