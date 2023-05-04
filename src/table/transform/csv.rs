@@ -1,6 +1,7 @@
 use crate::table::cell::Cell;
+use crate::table::transform::ParseTableError;
+use crate::table::FormatOptions;
 use crate::table::Table;
-use crate::table::{FormatOptions, ParseTableError};
 use csv::ReaderBuilder;
 use std::collections::VecDeque;
 use std::str::FromStr;

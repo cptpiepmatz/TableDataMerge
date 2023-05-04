@@ -1,7 +1,5 @@
 use crate::cli::{Args, DecimalSeparator};
 use crate::table::cell::Cell;
-use crate::table::transform::csv::ParseCsvTableError;
-use crate::table::transform::json::ParseJsonTableError;
 use crate::util::AnyRange;
 use std::cmp;
 use std::collections::VecDeque;
@@ -10,11 +8,6 @@ use tabled::builder::Builder;
 
 pub mod cell;
 mod transform;
-
-pub enum ParseTableError {
-    Csv(ParseCsvTableError),
-    Json(ParseJsonTableError),
-}
 
 pub struct Table {
     height: usize,

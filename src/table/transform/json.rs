@@ -1,5 +1,6 @@
 use crate::table::cell::Cell;
-use crate::table::{FormatOptions, ParseTableError, Table};
+use crate::table::transform::ParseTableError;
+use crate::table::{FormatOptions, Table};
 use serde_json::Error;
 use std::collections::VecDeque;
 use std::str::FromStr;

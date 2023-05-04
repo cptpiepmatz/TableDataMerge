@@ -1,8 +1,9 @@
 use std::cmp;
 
 use crate::table::cell::Cell;
+use crate::table::transform::ParseTableError;
+use crate::table::FormatOptions;
 use crate::table::Table;
-use crate::table::{FormatOptions, ParseTableError};
 
 impl Table {
     pub fn to_tex(&self, format_options: &FormatOptions) -> String {
