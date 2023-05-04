@@ -9,6 +9,14 @@ use tabled::builder::Builder;
 pub mod cell;
 mod transform;
 
+/// A general table structure that holds cells.
+///
+/// The `Table` struct provides the functionality to store, manipulate, and merge tables.
+/// It can be read from and written to by implementing transformer functions `from_x` and `to_x`.
+/// A custom implementation of the `Debug` trait provides a human-readable representation of the
+/// table.
+/// The struct ensures that the height and width of the table are always consistent when
+/// concatenating or stacking tables.
 pub struct Table {
     height: usize,
     width: usize,
@@ -16,6 +24,7 @@ pub struct Table {
 }
 
 impl Table {
+    /// Pads the bottom of the table with blank cells until it reaches the specified height.
     fn pad_bottom(&mut self, height: usize) {
         if self.height < height {
             let needed_height = height - self.height;
@@ -26,6 +35,7 @@ impl Table {
         self.height = height;
     }
 
+    /// Pads the right side of the table with blank cells until it reaches the specified width.
     fn pad_right(&mut self, width: usize) {
         if self.width < width {
             let needed_width = width - self.width;
@@ -38,6 +48,10 @@ impl Table {
         self.width = width;
     }
 
+    /// Concatenates another table to the right side of the current table.
+    ///
+    /// This operation modifies both tables to ensure they have the same height.
+    /// The other table is consumed and becomes invalid after this operation.
     pub fn concat(&mut self, mut other: Self) {
         // other is pulled into and therefore useless afterwards
         let height = cmp::max(self.height, other.height);
@@ -50,6 +64,10 @@ impl Table {
         self.width = self.width + other.width;
     }
 
+    /// Stacks another table on top of the current table.
+    ///
+    /// This operation modifies both tables to ensure they have the same width.
+    /// The other table is consumed and becomes invalid after this operation.
     pub fn stack(&mut self, mut other: Self) {
         let width = cmp::max(self.width, other.width);
         self.pad_right(width);
@@ -60,6 +78,7 @@ impl Table {
         self.height = self.height + other.height;
     }
 
+    /// Creates a new row of blank cells with the specified width.
     fn create_blank_row(width: usize) -> Vec<Cell> {
         let mut row = Vec::with_capacity(width);
         row.resize(width, Cell::Blank);
@@ -67,6 +86,9 @@ impl Table {
     }
 }
 
+/// Custom implementation of the `Debug` trait for `Table`.
+///
+/// This implementation provides a human-readable representation of the table.
 impl Debug for Table {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let mut table_builder = Builder::with_capacity(self.height * self.width);
