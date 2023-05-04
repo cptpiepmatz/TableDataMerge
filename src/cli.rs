@@ -1,5 +1,5 @@
 use crate::table::cell::Cell;
-use crate::util::AnyRange;
+use crate::util::{AnyRange, ParseAnyRangeError};
 use clap::error::ErrorKind;
 use clap::{CommandFactory, Parser, ValueEnum};
 use std::convert::Infallible;
@@ -62,32 +62,49 @@ pub enum DecimalSeparator {
     Comma,
 }
 
+/// Represents an error that occurs when parsing a fix (prefix or suffix).
 #[derive(Debug)]
-struct ParseFixError;
+enum ParseFixError {
+    InvalidRange(ParseAnyRangeError)
+}
 
 impl Display for ParseFixError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        todo!()
+        match self {
+            ParseFixError::InvalidRange(r) => Display::fmt(r, f)
+        }
+    }
+}
+
+impl From<ParseAnyRangeError> for ParseFixError {
+    fn from(value: ParseAnyRangeError) -> Self {
+        ParseFixError::InvalidRange(value)
     }
 }
 
 impl Error for ParseFixError {}
 
+/// Parses a fix (prefix or suffix) provided as a command-line argument.
+/// The input should be in the format "<range>:<fix>".
+/// The range is a typical Rust range, and the fix is a string to be placed at the specified range.
 fn parse_fix(input: &str) -> Result<(AnyRange<usize>, String), ParseFixError> {
     let mut split = input.splitn(2, ':');
 
-    // TODO: handle this better
-    let range = split.next().unwrap();
-    let range: AnyRange<usize> = range.parse().unwrap();
+    let range = split.next().expect("first always exists");
+    let range: AnyRange<usize> = range.parse()?;
 
-    let fix = split.next().unwrap();
+    let fix = split.next().unwrap_or("");
 
     Ok((range, fix.to_string()))
 }
 
+/// Parses the input file path, which may include additional data appended with a ":".
+/// Since ":" is not a valid character for file paths in most relevant file systems, it can be
+/// safely used as a separator here.
+/// If no ":" is found, this function returns the file path and a `None`.
 fn parse_file_path(input: &str) -> Result<(String, Option<String>), Infallible> {
     let mut split = input.splitn(2, ':');
-    let file_path = split.next().unwrap().to_string(); // first value always exists
+    let file_path = split.next().expect("first always exists").to_string();
     let additional_data = split.next().map(str::to_string);
     Ok((file_path, additional_data))
 }
