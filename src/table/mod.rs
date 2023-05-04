@@ -106,7 +106,11 @@ impl From<VecDeque<Vec<Cell>>> for Table {
         for row in values.iter_mut() {
             row.resize(width, Cell::Blank);
         }
-        Table { height, width, values }
+        Table {
+            height,
+            width,
+            values,
+        }
     }
 }
 

@@ -1,6 +1,6 @@
+use regex::{Match, Regex};
 use std::error::Error;
 use std::fmt::{Display, Formatter};
-use regex::{Match, Regex};
 use std::ops::{
     Range, RangeBounds, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
 };
@@ -53,13 +53,13 @@ where
 /// An error type for parsing an `AnyRange` from a string.
 #[derive(Debug)]
 pub enum ParseAnyRangeError {
-    InvalidFormat { raw: String }
+    InvalidFormat { raw: String },
 }
 
 impl Display for ParseAnyRangeError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::InvalidFormat {raw} => write!(f, "invalid format '{raw}'")
+            Self::InvalidFormat { raw } => write!(f, "invalid format '{raw}'"),
         }
     }
 }
@@ -78,15 +78,23 @@ impl FromStr for AnyRange<usize> {
                     .expect("should be valid regex");
         }
 
-        let captures = RE.captures(s).ok_or_else(|| ParseAnyRangeError::InvalidFormat { raw: s.to_string() })?;
-        let start: Option<usize> = captures
-            .name("start")
-            .map(|m| m.as_str().parse::<u16>().expect("regex must match 'start'").into());
+        let captures = RE
+            .captures(s)
+            .ok_or_else(|| ParseAnyRangeError::InvalidFormat { raw: s.to_string() })?;
+        let start: Option<usize> = captures.name("start").map(|m| {
+            m.as_str()
+                .parse::<u16>()
+                .expect("regex must match 'start'")
+                .into()
+        });
         let range = captures.name("range");
         let inclusive = captures.name("inclusive");
-        let end = captures
-            .name("end")
-            .map(|m| m.as_str().parse::<u16>().expect("digits only should be parseable as u16").into());
+        let end = captures.name("end").map(|m| {
+            m.as_str()
+                .parse::<u16>()
+                .expect("digits only should be parseable as u16")
+                .into()
+        });
 
         match (start, range, inclusive, end) {
             // 1

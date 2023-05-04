@@ -6,17 +6,15 @@ use csv::ReaderBuilder;
 use lazy_static::lazy_static;
 use regex::Regex;
 
-use crate::table::{FormatOptions, ParseTableError};
 use crate::table::cell::Cell;
+use crate::table::{FormatOptions, ParseTableError};
 
 use crate::table::Table;
 
 impl Table {
     pub fn from_m(raw: &str, _: &Option<String>) -> Result<Table, ParseTableError> {
         lazy_static! {
-            static ref RE: Regex =
-                Regex::new(r"\[([^\[\]]+)\]")
-                    .unwrap();
+            static ref RE: Regex = Regex::new(r"\[([^\[\]]+)\]").unwrap();
         }
 
         let relevant_part = RE.find(raw).unwrap().as_str();
