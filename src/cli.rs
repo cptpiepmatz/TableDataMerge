@@ -13,40 +13,86 @@ use std::fmt::{Debug, Display, Formatter};
 /// including number formatting, prefixes, and suffixes.
 #[derive(Parser, Debug, Clone)]
 pub struct Args {
+    /// Output data type
+    ///
+    /// Specifies the output data type.
     #[arg()]
     pub to: OutTypes,
 
+    /// Output file path
+    ///
+    /// Sets the output file path.
+    /// If not provided, the output path will be generated from the input file stems and the output data type.
     #[arg(short, long)]
     pub out: Option<String>,
 
+    /// Amount of decimal places
+    ///
+    /// Sets the number of decimal places for numerical values, which will be correctly rounded.
     #[arg(short, long)]
     pub precision: Option<u16>,
 
+    /// Decimal separator
+    ///
+    /// Sets the decimal separator for numerical values.
     #[arg(short, long, default_value = "dot")]
     pub decimal_sep: DecimalSeparator,
 
+    /// Scientific notation
+    ///
+    /// Enables scientific notation for numerical cells (e.g., '1.234e+05').
     #[arg(short, long = "exponent", default_value_t = false)]
     pub exponent: bool,
 
+    /// Sign every number
+    ///
+    /// Forces a sign on every number.
+    /// By default, only negative values have a sign. This setting forces positive values to have a "+" prefix.
     #[arg(short, long, default_value_t = false)]
     pub sign: bool,
 
+    /// Inject '\hline'
+    ///
+    /// Inserts '\hline' between lines when using 'tex' output format.
     #[arg(short = 'H', long, default_value_t = false)]
     pub hline: bool,
 
+    /// Choose csv delimiter
+    ///
+    /// Specifies the value separator for 'csv' output format.
     #[arg(short, long, default_value = ",")]
     pub csv_sep: String,
 
+    /// Numerical prefixes
+    ///
+    /// Sets prefixes for numerical cells.
+    /// Use multiple times to set different prefixes for different ranges.
+    /// Argument format: '<range>:<fix>', where 'fix' is the string placed before the cell.
+    /// Ranges follow Rust syntax (e.g., '1..2', '..2', '1..', '..' or '1') and are 0-indexed.
+    /// Overlapping ranges will override previous rules.
+    /// To use spaces consider the syntax: '-P "1..2: m"'.
     #[arg(short = 'P', long, num_args(1), value_parser = parse_fix)]
     pub prefix: Vec<(AnyRange<usize>, String)>,
 
+    /// Numerical suffixes
+    ///
+    /// Sets suffixes for numerical cells.
+    /// Follows the same format and behavior as the `prefix` option.
     #[arg(short = 'S', long, num_args(1), value_parser = parse_fix)]
     pub suffix: Vec<(AnyRange<usize>, String)>,
 
+    /// Stack tables
+    ///
+    /// Stacks tables vertically instead of concatenating them horizontally.
     #[arg(short, long, default_value_t = false)]
     pub vertical: bool,
 
-    // files with additional data
+    /// File paths
+    ///
+    /// Specifies input file paths and optional additional data.
+    /// Format: '<file_path>:<additional_data>'.
+    /// For .csv files, additional data can set a custom delimiter (e.g., ';' or '|').
+    /// Example: 'example.csv:;'.
     #[arg(required = true, num_args(1..), value_parser = parse_file_path)]
     pub files: Vec<(String, Option<String>)>,
 }
