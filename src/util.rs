@@ -1,3 +1,5 @@
+use std::error::Error;
+use std::fmt::{Display, Formatter};
 use regex::{Match, Regex};
 use std::ops::{
     Range, RangeBounds, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
@@ -6,6 +8,15 @@ use std::str::FromStr;
 
 use lazy_static::lazy_static;
 
+/// An enum representing a range of indices.
+///
+/// The `AnyRange` enum can hold different types of ranges including:
+/// - Single index
+/// - Half-open range
+/// - Open range
+/// - Inclusive range
+/// - Half-open range with a start bound
+/// - Inclusive range with an end bound
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub enum AnyRange<Idx> {
     Index(Idx),
@@ -21,6 +32,7 @@ impl<Idx> AnyRange<Idx>
 where
     Idx: PartialOrd<Idx>,
 {
+    /// Checks if the given item is contained within the range.
     pub fn contains<U>(&self, item: &U) -> bool
     where
         Idx: PartialOrd<U>,
@@ -38,30 +50,43 @@ where
     }
 }
 
+/// An error type for parsing an `AnyRange` from a string.
 #[derive(Debug)]
-pub struct ParseAnyRangeError;
+pub enum ParseAnyRangeError {
+    InvalidFormat { raw: String }
+}
+
+impl Display for ParseAnyRangeError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::InvalidFormat {raw} => write!(f, "invalid format '{raw}'")
+        }
+    }
+}
+
+impl Error for ParseAnyRangeError {}
 
 impl FromStr for AnyRange<usize> {
     type Err = ParseAnyRangeError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        // TODO: do more precise errors
-
         lazy_static! {
             static ref RE: Regex =
+                // once correctly parsed this should always parse correctly since the content of
+                // the regex is static
                 Regex::new(r"(?<start>\d+)?(?:(?<range>\.\.)(?<inclusive>=)?(?<end>\d+)?)?")
-                    .unwrap();
+                    .expect("should be valid regex");
         }
 
-        let captures = RE.captures(s).unwrap();
+        let captures = RE.captures(s).ok_or_else(|| ParseAnyRangeError::InvalidFormat { raw: s.to_string() })?;
         let start: Option<usize> = captures
             .name("start")
-            .map(|m| m.as_str().parse::<u16>().unwrap().into());
+            .map(|m| m.as_str().parse::<u16>().expect("regex must match 'start'").into());
         let range = captures.name("range");
         let inclusive = captures.name("inclusive");
         let end = captures
             .name("end")
-            .map(|m| m.as_str().parse::<u16>().unwrap().into());
+            .map(|m| m.as_str().parse::<u16>().expect("digits only should be parseable as u16").into());
 
         match (start, range, inclusive, end) {
             // 1
@@ -89,7 +114,7 @@ impl FromStr for AnyRange<usize> {
                 Ok(AnyRange::RangeToInclusive(RangeToInclusive { end }))
             }
 
-            _ => todo!(),
+            _ => panic!("'{s}' correctly captured but could not be matched"),
         }
     }
 }
