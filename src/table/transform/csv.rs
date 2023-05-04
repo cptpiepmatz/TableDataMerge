@@ -20,7 +20,13 @@ impl Table {
             .from_reader(raw.as_bytes());
         let table: Result<VecDeque<Vec<Cell>>, ParseCsvTableError> = reader
             .records()
-            .map(|r| r.map(|r| r.iter().map(|i| Cell::from_str(i).unwrap()).collect()))
+            .map(|r| {
+                r.map(|r| {
+                    r.iter()
+                        .map(|i| Cell::from_str(i).expect("infallible"))
+                        .collect()
+                })
+            })
             .collect();
         Ok(table?.into())
     }

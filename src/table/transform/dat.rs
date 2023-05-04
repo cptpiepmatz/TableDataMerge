@@ -12,8 +12,7 @@ impl Table {
             .map(|l| {
                 l.trim()
                     .split('\t')
-                    .map(Cell::from_str)
-                    .map(Result::unwrap)
+                    .map(|c| Cell::from_str(c).expect("infallible"))
                     .collect()
             })
             .collect();
