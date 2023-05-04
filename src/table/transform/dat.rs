@@ -1,34 +1,26 @@
-use std::cmp;
-
 use crate::table::cell::Cell;
 use crate::table::Table;
 use crate::table::{FormatOptions, ParseTableError};
+use std::collections::VecDeque;
+use std::str::FromStr;
 
 impl Table {
+    /// Construct a table from the contents of a dat file.
     pub fn from_dat(raw: &str, _: &Option<String>) -> Result<Table, ParseTableError> {
-        // compute width and height of table
-        let mut height: usize = 0;
-        let mut width: usize = 0;
-        for (i, line) in raw.lines().enumerate() {
-            for (j, _) in line.trim().split('\t').enumerate() {
-                width = cmp::max(j + 1, width);
-            }
-            height = i + 1;
-        }
-
-        // construct actual table and fill data
-        let (height, width) = (height, width);
-        let mut table = Table::new(width, height);
-        for (i, line) in raw.lines().enumerate() {
-            for (j, cell) in line.trim().split('\t').enumerate() {
-                let cell: Cell = cell.parse().unwrap(); // infallible
-                table.values[i][j] = cell;
-            }
-        }
-
-        Ok(table)
+        let table: VecDeque<Vec<Cell>> = raw
+            .lines()
+            .map(|l| {
+                l.trim()
+                    .split('\t')
+                    .map(Cell::from_str)
+                    .map(Result::unwrap)
+                    .collect()
+            })
+            .collect();
+        Ok(table.into())
     }
 
+    /// Construct a dat representation.
     pub fn to_dat(&self, format_options: &FormatOptions) -> String {
         let mut output = String::new();
         for (i, row) in self.values.iter().enumerate() {
