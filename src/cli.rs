@@ -1,3 +1,6 @@
+// help texts is mistaken as html
+#![allow(rustdoc::invalid_html_tags)]
+
 use crate::table::cell::Cell;
 use crate::util::{AnyRange, ParseAnyRangeError};
 use clap::error::ErrorKind;
