@@ -11,6 +11,7 @@ dependencies = [
  "format_num",
  "itertools",
  "lazy_static",
+ "paris",
  "regex",
  "serde",
  "serde_json",
@@ -295,6 +296,12 @@ dependencies = [
  "fnv",
  "unicode-width",
 ]
+
+[[package]]
+name = "paris"
+version = "1.5.15"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8fecab3723493c7851f292cb060f3ee1c42f19b8d749345d0d7eaf3fd19aa62d"
 
 [[package]]
 name = "proc-macro-error"
