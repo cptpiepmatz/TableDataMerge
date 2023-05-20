@@ -1,10 +1,8 @@
 // help texts is mistaken as html
 #![allow(rustdoc::invalid_html_tags)]
 
-use crate::table::cell::Cell;
 use crate::util::{AnyRange, ParseAnyRangeError};
-use clap::error::ErrorKind;
-use clap::{CommandFactory, Parser, ValueEnum};
+use clap::{Parser, ValueEnum};
 use std::convert::Infallible;
 use std::error::Error;
 use std::fmt::{Debug, Display, Formatter};

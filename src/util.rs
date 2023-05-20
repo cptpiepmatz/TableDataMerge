@@ -1,12 +1,11 @@
-use regex::{Match, Regex};
+use lazy_static::lazy_static;
+use regex::Regex;
 use std::error::Error;
 use std::fmt::{Display, Formatter};
 use std::ops::{
     Range, RangeBounds, RangeFrom, RangeFull, RangeInclusive, RangeTo, RangeToInclusive,
 };
 use std::str::FromStr;
-
-use lazy_static::lazy_static;
 
 /// An enum representing a range of indices.
 ///
