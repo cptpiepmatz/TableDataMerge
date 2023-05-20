@@ -1,8 +1,8 @@
-use std::error::Error;
-use std::fmt::{Display, Formatter};
 use crate::table::transform::csv::ParseCsvTableError;
 use crate::table::transform::json::ParseJsonTableError;
 use crate::table::transform::m::ParseMTableError;
+use std::error::Error;
+use std::fmt::{Display, Formatter};
 
 pub mod csv;
 pub mod dat;
@@ -24,7 +24,7 @@ impl Display for ParseTableError {
         match self {
             ParseTableError::Csv(c) => c.fmt(f),
             ParseTableError::Json(j) => j.fmt(f),
-            ParseTableError::M(m) => m.fmt(f)
+            ParseTableError::M(m) => m.fmt(f),
         }
     }
 }

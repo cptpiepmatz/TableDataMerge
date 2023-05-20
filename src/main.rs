@@ -1,17 +1,18 @@
 use clap::Parser;
 use std::ffi::OsStr;
-use std::fmt::format;
 use std::path::Path;
-use std::{fs, process};
+use std::fs;
 
+use crate::error::TdmError;
 use cli::{Args, OutTypes};
 use table::Table;
 
 use crate::table::FormatOptions;
 
 mod cli;
-mod table;
-mod util;
+mod error;
+pub mod table;
+pub mod util;
 
 fn main() {
     let args = Args::parse();
@@ -20,9 +21,12 @@ fn main() {
     let file_contents = args.files.iter().map(|f| {
         (
             f,
-            fs::read_to_string(&f.0).unwrap_or_else(|e| {
-                eprintln!("{e}");
-                process::exit(1);
+            fs::read_to_string(&f.0).unwrap_or_else(|error| {
+                TdmError::ReadFile {
+                    path: f.0.clone(),
+                    error,
+                }
+                .handle();
             }),
         )
     });
@@ -32,8 +36,10 @@ fn main() {
             .file_stem()
             .and_then(OsStr::to_str)
             .unwrap_or_else(|| {
-                eprintln!("could not determine file stem for '{file}'");
-                process::exit(1);
+                TdmError::DetermineFileStem {
+                    file: file.to_owned(),
+                }
+                .handle()
             });
         let file_type = file_path.extension().and_then(OsStr::to_str);
         let parse_res = match file_type {
@@ -41,21 +47,18 @@ fn main() {
             Some("json") => Table::from_json(&content, additional_data),
             Some("csv") => Table::from_csv(&content, additional_data),
             Some("m") => Table::from_m(&content, additional_data),
-            Some(file_type) => {
-                eprintln!("unknown file type '{file_type}'");
-                process::exit(1);
+            Some(file_type) => TdmError::UnknownFileType {
+                file_type: file_type.to_owned(),
             }
-            None => {
-                eprintln!("could not determine file type for file '{file}'");
-                process::exit(1);
+            .handle(),
+            None => TdmError::DetermineFileType {
+                file: file.to_owned(),
             }
+            .handle(),
         };
         match parse_res {
             Ok(table) => tables.push((file_stem.to_string(), table)),
-            Err(_) => {
-                eprintln!("could not parse table '{file}'");
-                process::exit(1);
-            }
+            Err(error) => TdmError::ParseTable(error).handle(),
         }
     }
 
@@ -101,5 +104,14 @@ fn main() {
         OutTypes::Json => first_table.to_json(&format_options),
     };
 
-    fs::write(out_path, output).unwrap();
+    fs::write(out_path, output).unwrap_or_else(|error| {
+        TdmError::WriteFile {
+            path: out_path
+                .to_str()
+                .expect("constructed from string")
+                .to_owned(),
+            error,
+        }
+        .handle()
+    });
 }

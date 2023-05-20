@@ -119,13 +119,13 @@ pub enum DecimalSeparator {
 /// Represents an error that occurs when parsing a fix (prefix or suffix).
 #[derive(Debug)]
 enum ParseFixError {
-    InvalidRange(ParseAnyRangeError)
+    InvalidRange(ParseAnyRangeError),
 }
 
 impl Display for ParseFixError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            ParseFixError::InvalidRange(r) => Display::fmt(r, f)
+            ParseFixError::InvalidRange(r) => Display::fmt(r, f),
         }
     }
 }

@@ -8,6 +8,7 @@ use tabled::builder::Builder;
 
 pub mod cell;
 mod transform;
+pub use transform::ParseTableError;
 
 /// A general table structure that holds cells.
 ///
