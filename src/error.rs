@@ -1,6 +1,6 @@
 use crate::table::ParseTableError;
-use std::{io, process};
 use paris::Logger;
+use std::{io, process};
 
 #[derive(Debug)]
 pub enum TdmError {
@@ -13,20 +13,38 @@ pub enum TdmError {
 }
 
 impl TdmError {
-    pub fn handle(&self) -> ! {
-        let mut logger = Logger::new();
+    pub fn handle(&self, logger: &mut Logger) -> ! {
+        logger.done();
         logger.error(self.msg());
         process::exit(self.exit_code())
     }
 
     fn msg(&self) -> String {
         match self {
-            TdmError::ReadFile { path, error } => format!("Could not read file '{path}', {error}"),
-            TdmError::WriteFile { path, error } => format!("Could not write file '{path}', {error}"),
-            TdmError::DetermineFileStem { file } => format!("Could not determine file steam for '{file}'"),
-            TdmError::DetermineFileType { file } => format!("Could not determine file type for '{file}'"),
-            TdmError::UnknownFileType { file_type } => format!("Unknown file type '{file_type}' for parsing"),
-            TdmError::ParseTable(e) => format!("Could not parse table, {e}")
+            TdmError::ReadFile { path, error } => {
+                let error = format!("{error}");
+                format!(
+                    "Could not read file '{path}', {}",
+                    uncapitalize_sentence(&error)
+                )
+            }
+            TdmError::WriteFile { path, error } => {
+                let error = format!("{error}");
+                format!(
+                    "Could not write file '{path}', {}",
+                    uncapitalize_sentence(&error)
+                )
+            }
+            TdmError::DetermineFileStem { file } => {
+                format!("Could not determine file steam for '{file}'")
+            }
+            TdmError::DetermineFileType { file } => {
+                format!("Could not determine file type for '{file}'")
+            }
+            TdmError::UnknownFileType { file_type } => {
+                format!("Unknown file type '{file_type}' for parsing")
+            }
+            TdmError::ParseTable(e) => format!("Could not parse table, {e}"),
         }
     }
 
@@ -37,7 +55,12 @@ impl TdmError {
             TdmError::DetermineFileStem { .. } => 5,
             TdmError::DetermineFileType { .. } => 6,
             TdmError::UnknownFileType { .. } => 7,
-            TdmError::ParseTable(_) => 8
+            TdmError::ParseTable(_) => 8,
         }
     }
+}
+
+fn uncapitalize_sentence(s: &str) -> String {
+    let (l, r) = s.split_at(1);
+    l.to_lowercase() + r
 }
