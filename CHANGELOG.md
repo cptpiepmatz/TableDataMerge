@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.0] - 2023-07-14
+
+### 🚀 Stabilization
+- Stabilized v2.0.0-rc.1
+
 ## [2.0.0-rc.1] - 2023-05-20
 
 ### 🛠️ Improvements

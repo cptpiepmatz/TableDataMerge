@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/cptpiepmatz/TableDataMerge/releases">
-    <img alt="Version" src="https://img.shields.io/badge/version-v2.0.0--rc.1-blue?style=for-the-badge"/>
+    <img alt="Version" src="https://img.shields.io/badge/version-v2.0.0-blue?style=for-the-badge"/>
   </a>
   <a href="https://github.com/cptpiepmatz/TableDataMerge/blob/master/LICENSE">
     <img alt="License" src="https://img.shields.io/github/license/cptpiepmatz/TableDataMerge?style=for-the-badge"/>
