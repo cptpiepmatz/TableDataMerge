@@ -62,7 +62,7 @@ impl Table {
             .iter_mut()
             .zip(other.values.iter_mut())
             .for_each(|(self_values, other_values)| self_values.append(other_values));
-        self.width = self.width + other.width;
+        self.width += other.width;
     }
 
     /// Stacks another table on top of the current table.
@@ -76,7 +76,7 @@ impl Table {
         while let Some(row) = other.values.pop_front() {
             self.values.push_back(row);
         }
-        self.height = self.height + other.height;
+        self.height += other.height;
     }
 
     /// Creates a new row of blank cells with the specified width.

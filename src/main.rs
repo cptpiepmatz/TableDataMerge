@@ -51,10 +51,10 @@ fn main() {
         };
         let file_type = file_path.extension().and_then(OsStr::to_str);
         let parse_res = match file_type {
-            Some("txt" | "dat") => Table::from_dat(&content, &additional_data),
-            Some("json") => Table::from_json(&content, &additional_data),
-            Some("csv") => Table::from_csv(&content, &additional_data),
-            Some("m") => Table::from_m(&content, &additional_data),
+            Some("txt" | "dat") => Table::from_dat(&content, additional_data),
+            Some("json") => Table::from_json(&content, additional_data),
+            Some("csv") => Table::from_csv(&content, additional_data),
+            Some("m") => Table::from_m(&content, additional_data),
             Some(file_type) => TdmError::UnknownFileType {
                 file_type: file_type.to_owned(),
             }

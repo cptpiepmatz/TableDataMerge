@@ -18,10 +18,10 @@ impl Table {
         let values = &relevant_part[1..(relevant_part.len() - 1)];
 
         let mut raw_table = VecDeque::new();
-        let rows = values.split(";").map(str::trim);
+        let rows = values.split(';').map(str::trim);
         for row in rows {
             let mut row_items = Vec::new();
-            for cell in row.split(" ") {
+            for cell in row.split(' ') {
                 row_items.push(Cell::from_str(cell).unwrap());
             }
             raw_table.push_back(row_items);

@@ -10,10 +10,7 @@ impl Table {
     /// Construct a table from the contents of a csv file.
     pub fn from_csv(raw: &str, additional_data: &Option<String>) -> Result<Table, ParseTableError> {
         // determine delimiter
-        let delimiter = match additional_data.clone().and_then(|s| s.chars().next()) {
-            None => ';',
-            Some(c) => c,
-        };
+        let delimiter = additional_data.clone().and_then(|s| s.chars().next()).unwrap_or(';');
 
         let mut reader = ReaderBuilder::new()
             .has_headers(false)

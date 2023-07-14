@@ -100,7 +100,7 @@ impl Cell {
 
         match format_options.decimal_sep {
             DecimalSeparator::Dot => formatted,
-            DecimalSeparator::Comma => formatted.replace(".", ","),
+            DecimalSeparator::Comma => formatted.replace('.', ","),
         }
     }
 }
