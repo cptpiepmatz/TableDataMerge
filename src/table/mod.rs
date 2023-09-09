@@ -19,6 +19,7 @@ pub use transform::ParseTableError;
 /// The struct ensures that the height and width of the table are always consistent when
 /// concatenating or stacking tables.
 pub struct Table {
+    // TODO: in all implementations these are not used correctly but are 1 short
     height: usize,
     width: usize,
     values: VecDeque<Vec<Cell>>,

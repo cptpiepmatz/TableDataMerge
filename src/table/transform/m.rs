@@ -15,7 +15,7 @@ impl Table {
         }
 
         let relevant_part = RE.find(raw).ok_or(ParseMTableError)?.as_str();
-        let values = &relevant_part[1..(relevant_part.len() - 1)];
+        let values = &relevant_part[1..(relevant_part.len() - 1)].replace("...", "");
 
         let mut raw_table = VecDeque::new();
         let rows = values.split(';').map(str::trim);
@@ -45,5 +45,27 @@ impl Error for ParseMTableError {}
 impl From<ParseMTableError> for ParseTableError {
     fn from(value: ParseMTableError) -> Self {
         ParseTableError::M(value)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::*;
+
+    const EXAMPLE_RAW: &str = include_str!("../../../examples/example.m");
+    const EXAMPLE_SIZE: (usize, usize) = (3, 38 - 1);
+
+    const EXAMPLE2_RAW: &str = include_str!("../../../examples/example2.m");
+    const EXAMPLE2_SIZE: (usize, usize) = (1, 178 - 1);
+
+    #[test]
+    fn table_size() {
+        let example_table = Table::from_m(EXAMPLE_RAW, &None).unwrap();
+        assert_eq!(example_table.width, EXAMPLE_SIZE.0);
+        assert_eq!(example_table.height, EXAMPLE_SIZE.1);
+
+        let example2_table = Table::from_m(EXAMPLE2_RAW, &None).unwrap();
+        assert_eq!(example2_table.width, EXAMPLE2_SIZE.0);
+        assert_eq!(example2_table.height, EXAMPLE2_SIZE.1);
     }
 }
