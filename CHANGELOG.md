@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.1] - 2023-09-09
+
+### 🪲 Bugfix
+- Fixed handling for some `.m` files
+
 ## [2.0.0] - 2023-07-14
 
 ### 🚀 Stabilization

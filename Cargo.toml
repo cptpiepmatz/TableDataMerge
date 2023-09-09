@@ -1,6 +1,6 @@
 [package]
 name = "TableDataMerge"
-version = "2.0.0" # also update readme
+version = "2.0.1"
 edition = "2021"
 
 [package.metadata.winres]
