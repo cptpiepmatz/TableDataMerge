@@ -9,17 +9,14 @@
 </p>
 <br>
 
-<p align="center">
-  <a href="https://github.com/cptpiepmatz/TableDataMerge/releases">
-    <img alt="Version" src="https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fcptpiepmatz%2FTableDataMerge%2Fmain%2FCargo.toml&query=%24.package.version&prefix=v&style=for-the-badge&label=version"/>
-  </a>
-  <a href="https://github.com/cptpiepmatz/TableDataMerge/blob/master/LICENSE">
-    <img alt="License" src="https://img.shields.io/github/license/cptpiepmatz/TableDataMerge?style=for-the-badge"/>
-  </a>
-  <a href="https://www.rust-lang.org">
-    <img alt="Rust" src="https://img.shields.io/badge/written%20in-rust-orange?style=for-the-badge"/>
-  </a>
-</p>
+<div align="center">
+
+  [![Version](https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fcptpiepmatz%2FTableDataMerge%2Fmain%2FCargo.toml&query=%24.package.version&prefix=v&style=for-the-badge&label=version)](https://github.com/cptpiepmatz/TableDataMerge/releases)
+  [![License](https://img.shields.io/github/license/cptpiepmatz/TableDataMerge?style=for-the-badge)](https://github.com/cptpiepmatz/TableDataMerge/blob/master/LICENSE)
+  [![Rust](https://img.shields.io/badge/written%20in-rust-orange?style=for-the-badge)](https://www.rust-lang.org)
+
+</div>
+
 
 
 ## About
